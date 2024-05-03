@@ -1,33 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { geolocation } from 'react-native';
 
-const GpsTrackerComponent = () => {
+const GpsTracker = () => {
   const [location, setLocation] = useState(null);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    geolocation.getCurrentPosition(
-      (position) => {
-        setLocation(position.coords);
-      },
-      (error) => {
-        setError(error.message);
-      },
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    );
+    navigator.geolocation.watchPosition((position) => {
+      setLocation(position.coords);
+    });
   }, []);
 
   return (
     <div>
-      {location? (
+      {location && (
         <p>
-          Your current location is: {location.latitude}, {location.longitude}
+          Latitude: {location.latitude}
+          Longitude: {location.longitude}
         </p>
-      ) : (
-        <p>{error}</p>
       )}
     </div>
   );
 };
 
-export default GpsTrackerComponent;
+export default GpsTracker;
